@@ -64,4 +64,18 @@ def calculate_snr(señal, ruido):
 > + SNR para microfono 3 audio Isabela: 15.15 dB
 > + SNR para microfono 1 Ana: 22.30 dB
 > + SNR para microfono 2 audio Luna: 14.67 dB
-Esto indica que el micrófono dos, indica mejor calidad de audio ya que la señal es significativamente mas fuerte que el ruido, hay dos persona mas cerca del micrófono dos que a los otros dos micrófonos. Aunque la distancia es un factor importante en la calidad del audio, el SNR también está influenciado por otros elementos como el ruido ambiental, la dirección de la voz y la acústica del lugar. Sin embargo a menor distancia, mayor SNR y mejor calidad del audio.
+>
+Esto indica que el *micrófono dos*, tiene mejor calidad de audio ya que la señal es significativamente más fuerte que el ruido, hay dos persona más cerca del *micrófono dos* que a los otros dos micrófonos. Aunque la distancia es un factor importante en la calidad del audio, el SNR también está influenciado por otros elementos como el ruido ambiental, la dirección de la voz y la acústica del lugar. Sin embargo a menor distancia, mayor SNR y mejor calidad del audio.
+### Procesamiento de la señal 
+Para cada microfono se muestra la representación en el dominio del tiempo de la señal de audio. En esta gráfica se pueden observar variaciones en la amplitud de la señal a lo largo del tiempo, lo que permite identificar momentos de mayor o menor intensidad en la grabación y la segunda gráfica muestra el análisis espectral de la señal mediante la Transformada Rápida de Fourier (FFT).
+#### Micrófono 1 
+
+![Imagen de WhatsApp 2025-03-05 a las 22 42 49_dc1c2fb8](https://github.com/user-attachments/assets/5fd0166e-fd97-4018-a1d6-13cdad36a22c)
++ Existen regiones con menor amplitud, que podrían corresponder a pausas o silencios.
++ Se puede observar un aumento en la energía de la señal alrededor de los 25-35 segundos, lo que podría indicar un incremento en la intensidad sonora en ese período.
+
+![Imagen de WhatsApp 2025-03-05 a las 22 43 08_b1434c33](https://github.com/user-attachments/assets/e38827b6-309f-403d-ba91-acf996a2b3d8)
++ Aquí se representa la magnitud de las frecuencias en el eje vertical y la frecuencia en Hz en el eje horizontal.
++ La magnitud de las altas frecuencias disminuye progresivamente, lo que es típico en señales de voz, donde las bajas y medias frecuencias tienen mayor relevancia.
+>Se observa que la mayor parte de la energía está concentrada en frecuencias bajas, aproximadamente por debajo de 5000 Hz.
+>
