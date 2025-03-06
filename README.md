@@ -10,11 +10,11 @@ Este laboratorio aborda la temática conocida como el problema de la "fiesta de 
 
 ## Procedimiento
 ### Localización y toma de las señales
-Inicialmente, se colocaron tres micrófonos en la sala y se midieron las distancias entre ellos, así como entre cada micrófono y los tres participantes, tal como se muestra en la figura *****. Posteriormente, estas mediciones serán útiles para realizar el análisis con beamforming.
+Inicialmente, se colocan tres micrófonos en la sala y se miden las distancias entre ellos, así como entre cada micrófono y los tres participantes, tal como se muestra en la imagen: 
+![Imagen de WhatsApp 2025-03-05 a las 13 25 39_11386d4c](https://github.com/user-attachments/assets/117ef3e0-cc02-482f-85ee-7a78efc65599)
 
-**********************colocar fotos
-
-Una vez registradas todas las distancias, se calibraron los micrófonos a una frecuencia de muestreo de 44.1 kHz. Ahora síse procede a grabar, se realizaron dos grabaciones, una de 10 segundos de "silencio" que será usada como el ruido, y otra que es la propia del ruido tipo cóctel, donde los tres participantes hablaron simultáneamente.
+Posteriormente, estas mediciones serán útiles para realizar el análisis con beamforming.
+Una vez registradas todas las distancias, se calibran los micrófonos a una frecuencia de muestreo de 44.1 kHz. Ahora se procede a grabar, se realizan dos grabaciones en cada micrófono, una de 10 segundos de "silencio" que será usada como el ruido, y otra que es la propia del ruido tipo cóctel, donde los tres participantes hablaron simultáneamente.
 
 ### Análisis de las señales
 Luego de tener las grabaciones 
