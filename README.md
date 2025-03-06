@@ -61,7 +61,7 @@ def calculate_snr(señal, ruido):
     snr_luna = calculate_snr(señal_luna, ruido_luna)
     print(f"SNR para audio Luna: {snr_luna:.2f} dB")
 ```
-> + SNR para audio Isabela: 15.15 dB
-> + SNR para audio Ana: 22.30 dB
-> + SNR para audio Luna: 14.67 dB
-Esto indica que el micrófono dos, indica mejor calidad de audio ya que la señal es significativamente mas fuerte que el ruido
+> + SNR para microfono 3 audio Isabela: 15.15 dB
+> + SNR para microfono 1 Ana: 22.30 dB
+> + SNR para microfono 2 audio Luna: 14.67 dB
+Esto indica que el micrófono dos, indica mejor calidad de audio ya que la señal es significativamente mas fuerte que el ruido, hay dos persona mas cerca del micrófono dos que a los otros dos micrófonos. Aunque la distancia es un factor importante en la calidad del audio, el SNR también está influenciado por otros elementos como el ruido ambiental, la dirección de la voz y la acústica del lugar. Sin embargo a menor distancia, mayor SNR y mejor calidad del audio.
