@@ -68,7 +68,24 @@ def calculate_snr(señal, ruido):
 Esto indica que el *micrófono dos*, tiene mejor calidad de audio ya que la señal es significativamente más fuerte que el ruido, hay dos persona más cerca del *micrófono dos* que a los otros dos micrófonos. Aunque la distancia es un factor importante en la calidad del audio, el SNR también está influenciado por otros elementos como el ruido ambiental, la dirección de la voz y la acústica del lugar. Sin embargo a menor distancia, mayor SNR y mejor calidad del audio.
 ### Procesamiento de la señal 
 Para cada microfono se muestra la representación en el dominio del tiempo de la señal de audio. En esta gráfica se pueden observar variaciones en la amplitud de la señal a lo largo del tiempo, lo que permite identificar momentos de mayor o menor intensidad en la grabación y la segunda gráfica muestra el análisis espectral de la señal mediante la Transformada Rápida de Fourier (FFT).
-#### Micrófono 1 
+### Micrófono 1
+*Gráfica temporal*
+![Imagen de WhatsApp 2025-03-05 a las 23 05 23_ce73418f](https://github.com/user-attachments/assets/d33c120d-6216-4e23-82f5-e22f56b0e894)
++ La señal muestra variaciones en la amplitud a lo largo del tiempo, con momentos de mayor intensidad alrededor de los 25-35 segundos.
++ Hay una distribución simétrica de la amplitud en torno a cero.
+*Gráfica espectral*
+![Imagen de WhatsApp 2025-03-05 a las 23 05 47_76538817](https://github.com/user-attachments/assets/7295e403-ddbd-4380-92c5-8c5c317df927)
++ La presencia de energía en frecuencias muy altas podría indicar la presencia de ruido o artefactos en la grabación.
++ Se identifican picos pronunciados en bajas frecuencias, indicando la presencia de componentes dominantes en este rango.
+### Micrófono 2
+![Imagen de WhatsApp 2025-03-05 a las 23 13 55_ce94d599](https://github.com/user-attachments/assets/ed3601fd-58a6-4526-b8a0-f56ed021c069)
++ Al inicio, la amplitud es más estable y con menor variabilidad, mientras que hacia el final se observa mayor dispersión, lo que podría estar asociado a una variación en la intensidad del sonido o la aparición de ruido en la grabación.
+
+![Imagen de WhatsApp 2025-03-05 a las 23 14 16_2de3de37](https://github.com/user-attachments/assets/0917e783-f06f-4448-b356-268586ee4b2e)
++ A partir de los 5000 Hz, la magnitud disminuye progresivamente, pero se pueden notar pequeñas contribuciones en frecuencias más altas, lo que podría ser ruido o armónicos de la señal principal.
++ La estructura espectral es consistente con una señal de audio con predominancia en frecuencias bajas y medias.
+
+#### Micrófono 3 
 
 ![Imagen de WhatsApp 2025-03-05 a las 22 42 49_dc1c2fb8](https://github.com/user-attachments/assets/5fd0166e-fd97-4018-a1d6-13cdad36a22c)
 + Existen regiones con menor amplitud, que podrían corresponder a pausas o silencios.
