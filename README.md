@@ -183,6 +183,6 @@ Después de aplicar las tecnicas de separacion queriamos evealuar los resultados
 | LUNA (2)| -4.36dB  | 28.50dB |14.67dB|
 
 #### Análisis
-La técnica de **Beamforming** fue la menos efectiva para la separación del audio de los microfonos ya que en todos los casos disminuyó con respecto a la original, por tanto podria ser que hubo un mal ajuste en los microfonos y que la señal quedo por debajo del nivel de ruido. Es probable que el algoritmo de beamforming no esté bien configurado (mala selección de retardos o pesos) o que las señales provengan de múltiples fuentes en direcciones difíciles de filtrar.
+La técnica de **Beamforming** fue la menos efectiva para la separación del audio de los microfonos ya que en todos los casos disminuyó con respecto a la original, por tanto es posible la existencia de un mal ajuste en los microfonos y que la señal quedo por debajo del nivel de ruido. Es probable que el algoritmo de beamforming no esté bien configurado (mala selección de retardos ) o que las señales provengan de múltiples fuentes en direcciones difíciles de filtrar.
 
 En cuanto la tecnica de **ICA** se evidencia que pudo separar mejor las fuentes de audio, eliminando ruido y preservando la señal útil. La única excepción que se tuvo fue en el microfono de ANA (1), donde la SNR final es menor que la original, lo que podría deberse a que el método no pudo separar correctamente la señal deseada o que introdujo artefactos. El éxito en dos de tres micrófonos indica que es un buen método para la separación de fuentes.
