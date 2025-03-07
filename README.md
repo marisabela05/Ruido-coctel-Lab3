@@ -168,7 +168,7 @@ La representacion gráfica para cada microfono se ve en la siguiente imagen.
 ![image](https://github.com/user-attachments/assets/a7c419c7-9a70-4ebd-af43-f737137d7226)
 
 ### 2.4 Calculo SNR 
-Después de aplicar las tecnicas de separacion queriamos evealuar los resultados comparando la señal aislada con la señal original utilizado la relación señal/ruido para cuantificar el desempeño de la separación
+Después de aplicar las tecnicas de separacion queriamos evaluar los resultados comparando la señal aislada con la señal original utilizado la relación señal/ruido para cuantificar el desempeño de la separación
 ```python
    # Calcular SNR
     snr_beamforming = calculate_snr(s_alineada, señal)
