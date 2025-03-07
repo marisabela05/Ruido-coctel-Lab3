@@ -132,3 +132,122 @@ plt.show()
 + Tiene menor caída en frecuencias altas y menos ruido en bajas frecuencias.
 + La pendiente de atenuación es más gradual, lo que indica que se mantienen componentes de alta frecuencia sin una caída abrupta entre frecuencias de 500 Hz - 15 kHz
 
+### Separación de fuentes
+Para este apartado se implementa un algoritmo de separación de fuentes de audio utilizando técnicas de GCC-PHAT, beamforming y Análisis de Componentes Independientes (ICA).
+#### Retardos entre micrófonos con GCC-PHAT
+```python
+# Función para calcular el retardo con GCC-PHAT
+def gcc_phat(sig1, sig2, fs):
+    n = len(sig1) + len(sig2)
+    
+    SIG1 = fft(sig1, n=n)
+    SIG2 = fft(sig2, n=n)
+    R = SIG1 * np.conj(SIG2)
+    R /= np.abs(R)
+    cc = np.real(ifft(R))
+    max_shift = len(sig1) // 2
+    cc = np.concatenate((cc[-max_shift:], cc[:max_shift]))
+    delay = np.argmax(cc) - max_shift
+    return delay
+
+# Calcular los retardos entre micrófonos
+delay_12 = gcc_phat(mic1, mic2, sr1)
+delay_13 = gcc_phat(mic1, mic3, sr1)
+delays = [0, delay_12, delay_13]
+```
+>Esta función calcula el tiempo de retardo entre dos micrófonos usando la técnica GCC-PHAT (Generalized Cross-Correlation with Phase Transform).
+>Convierte las señales al dominio de la frecuencia (fft), calcula la correlación cruzada y obtiene el desplazamiento temporal entre las señales.
+>Calcula los retardos entre los micrófonos y almacena los valores en delays.
+>
+#### Aplicación Beamforming 
+```python
+# Aplicar Beamforming (Delay-and-Sum)
+def delay_and_sum(mics, delays):
+    aligned_signals = [np.roll(m, d) for m, d in zip(mics, delays)]
+    return np.mean(aligned_signals, axis=0)
+
+beamformed_signal = delay_and_sum([mic1, mic2, mic3], delays)
+```
+>Alinea las señales de los micrófonos corrigiendo los retardos (np.roll).
+>Promedia las señales alineadas para reforzar la fuente de interés y reducir el ruido.
+>
+#### ICA
+```python
+# Crear matriz de observaciones para ICA
+X = np.vstack([mic1, mic2, mic3]).T
+
+# Aplicar ICA para separar fuentes
+ica = FastICA(n_components=3)
+S_ica = ica.fit_transform(X)
+sf.write("voz_separada_beamforming.wav", beamformed_signal, sr1)
+
+# Guardar la señal más limpia
+sf.write("voz_extraida.wav", S_ica[:, 0], sr1)
+```
+>Aplica Análisis de Componentes Independientes (ICA) para separar las señales en diferentes fuentes independientes (por ejemplo, voces separadas).
+>Y las guarda con la funcion SF.WRITE.
+>
+### Calculo SNR final
+#### Calculo de retardos entre miccrofonos y aplicación de beamforming 
+
+```python
+def calcular_retraso(distancias, velocidad, sr):
+    return tuple(int(d / velocidad * sr) for d in distancias)
+
+distancias = [0, 1.72,3.46]  # Distancia entre micrófonos en metros
+velocidad_sonido = 343  # Velocidad del sonido en m/s
+retraso = calcular_retraso(distancias, velocidad_sonido, sr1)
+def beamforming(signals, delay):
+    num_mics = signals.shape[1]
+    beamformed_signal = np.zeros(len(signals))
+    for i, delay_i in enumerate(delay):
+        beamformed_signal += np.roll(signals[:, i], delay_i)
+    return beamformed_signal / num_mics
+
+# Asegurar que las tres señales tengan la misma longitud
+longitud_max = max(len(señal_isa), len(señal_ana), len(señal_luna))
+audio1 = np.pad(señal_isa, (0, longitud_max - len(señal_isa)))
+audio2 = np.pad(señal_ana, (0, longitud_max - len(señal_ana)))
+audio3 = np.pad(señal_luna, (0, longitud_max - len(señal_luna)))
+
+# Crear la matriz de señales: cada columna representa un micrófono
+audio_mix = np.vstack((audio1,audio2, audio3)).T
+
+# Aplicar beamforming
+beamformed_signal = beamforming(audio_mix, retraso)
+sf.write("voz_separada_beamforming.wav", beamformed_signal, sr1)
+```
+>El resultado (retraso) es un número entero que indica cuántas muestras debe desplazarse cada señal.
+>Se aplica beamforming a la señal combinada y se guarda el audio procesado (voz_separada_beamforming.wav).
+#### Aplicación de ICA
+```python
+# Aplicar Análisis de Componentes Independientes (ICA)
+ica = FastICA(n_components=3)
+señales_separadas = ica.fit_transform(audio_mix)
+señal_ica = señales_separadas[:, 0]  # Tomamos la primera señal separada
+sf.write("voz_extraida.wav", señal_ica, sr1)
+```
+>FastICA se usa para separar las fuentes de audio de la mezcla de micrófonos.
+>Se extrae la primera señal independiente (señal_ica), que corresponde a la fuente de interés.
+>Se guarda la señal extraída en voz_extraida.wav.
+#### Suma de ruidos y calculos de SNR FINAL
+```python
+# Asegurar que ambas señales de ruido tengan la misma longitud
+longitud_max_ruido = max(len(ruido_isa), len(ruido_ana), len(ruido_luna))
+ruido1 = np.pad(ruido_isa, (0, longitud_max_ruido - len(ruido_isa)))
+ruido2 = np.pad(ruido_ana, (0, longitud_max_ruido - len(ruido_ana)))
+ruido3 = np.pad(ruido_luna, (0, longitud_max_ruido - len(ruido_luna)))
+
+# Sumar los ruidos
+señal_suma = ruido1 + ruido2 + ruido3
+
+# Calcular SNR final
+SNR_FINAL_BEAM = calculate_snr(beamformed_signal, señal_suma)
+SNR_FINAL_ICA = calculate_snr(señal_ica, señal_suma)
+
+print(Fore.BLUE + f"SNR FINAL después de Beamforming: {SNR_FINAL_BEAM} dB")
+print(Fore.BLUE + f"SNR FINAL después de ICA: {SNR_FINAL_ICA} dB")
+```
+>Suma los ruidos captados en cada micrófono y calcula SNR después de aplicar beamforming e ICA para medir la mejora en la calidad de la señal.
+>1. SNR FINAL después de Beamforming: 8.783320207179363 dB
+>2. SNR FINAL después de ICA: 40.53800582885742 dB
