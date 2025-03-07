@@ -67,10 +67,43 @@ def calculate_snr(señal, ruido):
 >
 Esto indica que el *micrófono dos*, tiene mejor calidad de audio ya que la señal es significativamente más fuerte que el ruido, hay dos persona más cerca del *micrófono dos* que a los otros dos micrófonos. Aunque la distancia es un factor importante en la calidad del audio, el SNR también está influenciado por otros elementos como el ruido ambiental, la dirección de la voz y la acústica del lugar. Sin embargo a menor distancia, mayor SNR y mejor calidad del audio.
 ### Procesamiento de la señal 
-Para cada microfono se muestra la representación en el dominio del tiempo de la señal de audio. En esta gráfica se pueden observar variaciones en la amplitud de la señal a lo largo del tiempo, lo que permite identificar momentos de mayor o menor intensidad en la grabación y la segunda gráfica muestra el análisis espectral de la señal mediante la Transformada Rápida de Fourier (FFT).
+Para cada microfono se muestra la representación en el dominio del tiempo de la señal de audio. En esta gráfica se pueden observar variaciones en la amplitud de la señal a lo largo del tiempo, lo que permite identificar momentos de mayor o menor intensidad en la grabación y la segunda gráfica muestra el análisis espectral de la señal mediante la Transformada Rápida de Fourier (FFT). El codigó que nos facilita ver la grafica temporal y espectral es el siguiente: 
+```python
+# Cargar la señal de audio
+audio = "Audio-Isa.mp3"  # Cambia según el archivo a analizar
+señal, sr = librosa.load(audio, sr=None) 
+
+# === 1. ANÁLISIS TEMPORAL ===
+#Aquí se visualiza la forma de onda del audio en el dominio del tiempo
+plt.figure(figsize=(12, 4))
+librosa.display.waveshow(señal, sr=sr, alpha=0.75)
+plt.title("Forma de onda - Análisis temporal")
+plt.xlabel("Tiempo (s)")
+plt.ylabel("Amplitud")
+plt.show()
+
+# === 2. ANÁLISIS ESPECTRAL ===
+#Aquí transformamos la señal del dominio del tiempo al dominio de la frecuencia usando la Transformada Rápida de Fourier:
+# Aplicar FFT y calcular la magnitud del espectro
+N = len(señal)
+frec = np.fft.rfftfreq(N, d=1/sr)  # Frecuencias asociadas
+fft = np.fft.rfft(señal)  # Aplicar FFT
+magnitud = np.abs(fft)  # Obtener magnitud
+
+# Graficar el espectro
+#Aquí visualizamos el contenido espectral de la señal
+plt.figure(figsize=(12, 4))
+magnitud_db = 20 * np.log10(magnitud + 1e-6)  # Se suma 1e-6 para evitar log(0)
+plt.plot(frec, magnitud_db, color='red', alpha=0.75)
+plt.title("Análisis espectral - FFT")
+plt.xlabel("Frecuencia (Hz)")
+plt.ylabel("Magnitud db")
+plt.xlim(0, sr/2)  # Mostrar hasta la frecuencia de Nyquist
+plt.grid()
+plt.show()
+```
 ### Micrófono 1
-#### *Gráfica temporal*
-Audio de Ana 
+#### *Gráfica temporal* 
 ![Imagen de WhatsApp 2025-03-05 a las 23 05 23_ce73418f](https://github.com/user-attachments/assets/d33c120d-6216-4e23-82f5-e22f56b0e894)
 + La señal muestra variaciones en la amplitud a lo largo del tiempo, con momentos de mayor intensidad alrededor de los 25-35 segundos.
 + Hay una distribución simétrica de la amplitud en torno a cero.
@@ -79,14 +112,14 @@ Audio de Ana
 + Tiene una fuerte presencia de frecuencias bajas y medias
 + Se pueden notar fluctuaciones en todo el espectro, lo que sugiere la presencia de ruido en la grabación.
 + A partir de aproximadamente 5 kHz, la magnitud del espectro comienza a decaer de manera gradual.
+### Micrófono 2
 #### *Gráfica temporal*
-Audio Luna
 ![Imagen de WhatsApp 2025-03-05 a las 23 13 55_ce94d599](https://github.com/user-attachments/assets/ed3601fd-58a6-4526-b8a0-f56ed021c069)
 + Al inicio, la amplitud es más estable y con menor variabilidad, mientras que hacia el final se observa mayor dispersión, lo que podría estar asociado a una variación en la intensidad del sonido o la aparición de ruido en la grabación.
 #### *Gráfica espectral*
 ![Imagen de WhatsApp 2025-03-06 a las 23 06 21_22022cfa](https://github.com/user-attachments/assets/f619e980-a1d6-4b5f-8b86-9cb428432e4a)
-+ A partir de los 5000 Hz, la magnitud disminuye progresivamente, pero se pueden notar pequeñas contribuciones en frecuencias más altas, lo que podría ser ruido o armónicos de la señal principal.
-+ La estructura espectral es consistente con una señal de audio con predominancia en frecuencias bajas y medias.
++ El rango de magnitud va aproximadamente de -80 dB a 60 dB, lo que indica que se están considerando componentes débiles y fuertes en la señal.
++ Es posible que este espectro pertenezca a un micrófono con mejor respuesta en agudos o a una señal con menor contenido de ruido en frecuencias bajas.
 
 #### Micrófono 3 
 #### *Gráfica temporal*
