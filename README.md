@@ -69,29 +69,32 @@ Esto indica que el *micrófono dos*, tiene mejor calidad de audio ya que la señ
 ### Procesamiento de la señal 
 Para cada microfono se muestra la representación en el dominio del tiempo de la señal de audio. En esta gráfica se pueden observar variaciones en la amplitud de la señal a lo largo del tiempo, lo que permite identificar momentos de mayor o menor intensidad en la grabación y la segunda gráfica muestra el análisis espectral de la señal mediante la Transformada Rápida de Fourier (FFT).
 ### Micrófono 1
-*Gráfica temporal*
+#### *Gráfica temporal*
+Audio de Ana 
 ![Imagen de WhatsApp 2025-03-05 a las 23 05 23_ce73418f](https://github.com/user-attachments/assets/d33c120d-6216-4e23-82f5-e22f56b0e894)
 + La señal muestra variaciones en la amplitud a lo largo del tiempo, con momentos de mayor intensidad alrededor de los 25-35 segundos.
 + Hay una distribución simétrica de la amplitud en torno a cero.
-*Gráfica espectral*
-![Imagen de WhatsApp 2025-03-05 a las 23 05 47_76538817](https://github.com/user-attachments/assets/7295e403-ddbd-4380-92c5-8c5c317df927)
-+ La presencia de energía en frecuencias muy altas podría indicar la presencia de ruido o artefactos en la grabación.
-+ Se identifican picos pronunciados en bajas frecuencias, indicando la presencia de componentes dominantes en este rango.
-### Micrófono 2
+#### *Gráfica espectral*
+![Imagen de WhatsApp 2025-03-06 a las 23 03 24_028314ce](https://github.com/user-attachments/assets/93b97a17-4542-41d4-921b-14650e968a03)
++ Tiene una fuerte presencia de frecuencias bajas y medias
++ Se pueden notar fluctuaciones en todo el espectro, lo que sugiere la presencia de ruido en la grabación.
++ A partir de aproximadamente 5 kHz, la magnitud del espectro comienza a decaer de manera gradual.
+#### *Gráfica temporal*
+Audio Luna
 ![Imagen de WhatsApp 2025-03-05 a las 23 13 55_ce94d599](https://github.com/user-attachments/assets/ed3601fd-58a6-4526-b8a0-f56ed021c069)
 + Al inicio, la amplitud es más estable y con menor variabilidad, mientras que hacia el final se observa mayor dispersión, lo que podría estar asociado a una variación en la intensidad del sonido o la aparición de ruido en la grabación.
-
-![Imagen de WhatsApp 2025-03-05 a las 23 14 16_2de3de37](https://github.com/user-attachments/assets/0917e783-f06f-4448-b356-268586ee4b2e)
+#### *Gráfica espectral*
+![Imagen de WhatsApp 2025-03-06 a las 23 06 21_22022cfa](https://github.com/user-attachments/assets/f619e980-a1d6-4b5f-8b86-9cb428432e4a)
 + A partir de los 5000 Hz, la magnitud disminuye progresivamente, pero se pueden notar pequeñas contribuciones en frecuencias más altas, lo que podría ser ruido o armónicos de la señal principal.
 + La estructura espectral es consistente con una señal de audio con predominancia en frecuencias bajas y medias.
 
 #### Micrófono 3 
-
+#### *Gráfica temporal*
 ![Imagen de WhatsApp 2025-03-05 a las 22 42 49_dc1c2fb8](https://github.com/user-attachments/assets/5fd0166e-fd97-4018-a1d6-13cdad36a22c)
 + Existen regiones con menor amplitud, que podrían corresponder a pausas o silencios.
 + Se puede observar un aumento en la energía de la señal alrededor de los 25-35 segundos, lo que podría indicar un incremento en la intensidad sonora en ese período.
-
-![Imagen de WhatsApp 2025-03-05 a las 22 43 08_b1434c33](https://github.com/user-attachments/assets/e38827b6-309f-403d-ba91-acf996a2b3d8)
+#### *Gráfica espectral*
+![Imagen de WhatsApp 2025-03-06 a las 23 01 12_1c27e7a8](https://github.com/user-attachments/assets/bf8b914b-c008-41b7-8873-bb427537d87b)
 + Aquí se representa la magnitud de las frecuencias en el eje vertical y la frecuencia en Hz en el eje horizontal.
 + La magnitud de las altas frecuencias disminuye progresivamente, lo que es típico en señales de voz, donde las bajas y medias frecuencias tienen mayor relevancia.
 >Se observa que la mayor parte de la energía está concentrada en frecuencias bajas, aproximadamente por debajo de 5000 Hz.
