@@ -128,7 +128,7 @@ plt.show()
 + Se puede observar un aumento en la energía de la señal alrededor de los 25-35 segundos, lo que podría indicar un incremento en la intensidad sonora en ese período.
 #### *Gráfica espectral*
 ![Imagen de WhatsApp 2025-03-06 a las 23 01 12_1c27e7a8](https://github.com/user-attachments/assets/bf8b914b-c008-41b7-8873-bb427537d87b)
-+ Aquí se representa la magnitud de las frecuencias en el eje vertical y la frecuencia en Hz en el eje horizontal.
-+ La magnitud de las altas frecuencias disminuye progresivamente, lo que es típico en señales de voz, donde las bajas y medias frecuencias tienen mayor relevancia.
->Se observa que la mayor parte de la energía está concentrada en frecuencias bajas, aproximadamente por debajo de 5000 Hz.
->
++ Aquí se representa la magnitud db de las frecuencias en el eje vertical y la frecuencia en Hz en el eje horizontal.
++ Tiene menor caída en frecuencias altas y menos ruido en bajas frecuencias.
++ La pendiente de atenuación es más gradual, lo que indica que se mantienen componentes de alta frecuencia sin una caída abrupta entre frecuencias de 500 Hz - 15 kHz
+
