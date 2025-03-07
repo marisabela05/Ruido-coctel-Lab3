@@ -33,7 +33,7 @@ ruido_isa, sr_ruido_isa = librosa.load("Ruido-Isabela.mp3", sr=None)  # Ruido Is
 ```
 Lo mismo se hace para los 3 integrantes para importar y tener la señal en JupyterNotebook.
 
-### 2.2 Calculo de SNR 
+### 2.2 Calculo de SNR audio original
 
 Con al siguiente funcion se calcula el SNR para cada integrante, donde la funcion recibe 2 argumentos y calcula la potencia tanto de la señal como el ruido y procede a retornar el valor del SNR.
 ```python
@@ -123,7 +123,7 @@ plt.show()
 + El rango de magnitud va aproximadamente de -80 dB a 60 dB, lo que indica que se están considerando componentes débiles y fuertes en la señal.
 + Es posible que este espectro pertenezca a un micrófono con mejor respuesta en agudos o a una señal con menor contenido de ruido en frecuencias bajas.
 
-##### Micrófono 3 
+#### Micrófono 3 
 ![image](https://github.com/user-attachments/assets/8e7a6ea6-ed97-40bc-b20e-f1f585b49b7d)
 
 **Gráfica temporal**
@@ -135,8 +135,54 @@ plt.show()
 + Tiene menor caída en frecuencias altas y menos ruido en bajas frecuencias.
 + La pendiente de atenuación es más gradual, lo que indica que se mantienen componentes de alta frecuencia sin una caída abrupta entre frecuencias de 500 Hz - 15 kHz
 
+La combinación de ambos análisis nos permiten tener una interpretación más completa de la señal: El análisis temporal ayuda a detectar cuándo ocurre un evento en la señal cómo varía la amplitud de la señal con el tiempo. En cambio el análisis espectral ayuda a entender qué componentes frecuenciales están,cómo se distribuyen las diferentes frecuencias dentro de esta
+
 ### 2.4 Separación de fuentes
+Se debe tener en cuenta en este ítem que primero esto se aplica para cada microfono y segundo, que el beamforming es una técnica que se va a utilizar en el procesamiento de señal con arreglos de micrófonos para dirigir la captación de sonido en una dirección específica el cual se basa en la manipulación de la fase y amplitud de las señales recibidas por cada micrófono para mejorar la captación de una fuente de sonido en particular y atenuar el ruido o interferencias provenientes de otras direcciones.
+```python
+# Distancias entre micrófonos
+distancia = {"Isa": [0, 3.46, 3.50], "Ana": [1.72, 0, 3.50], "Luna": [3.46, 1.72, 0]}  # en metros
+v_sonido = 343  # m/s
 
-  
+# Procesar cada señal por separado
+for name, señal in zip(["Isa", "Ana", "Luna"], [señal_isa, señal_ana, señal_luna]):
+    # Beamforming con alineación por retardo
+    delays = np.array(distancia[name]) / v_sonido  # Convertir distancia a tiempo de retardo
+    t_muestras = [int(sr_señal_isa * d) for d in delays]  # Convertir tiempo a muestras
+    
+    # Aplicar beamforming con Delay-and-Sum
+    s_alineada = np.zeros_like(señal)
+    for shift in t_muestras:
+        s_alineada += np.roll(señal, shift) / len(t_muestras)  # Promedio de señales alineadas
+    
+    write(f'beamformed_{name}.wav', sr_señal_isa, (s_alineada * 32767).astype(np.int16))
+```
+Tambien, se realiza la aplicacion del Análisis de Componentes Independientes (ICA) el cual al ser un método de separación ciega de fuentes nos ayuda a descomponer una mezcla de señales en sus componentes originales asumiendo que son estadísticamente independientes. ICA nos fue útil para cuando se tienen múltiples señales que han sido captadas por diferentes micrófonos y se desea recuperar cada fuente original sin conocer sus características exactas.
+```python
+    ica = FastICA(n_components=1)
+    s_separada = ica.fit_transform(señal.reshape(-1, 1)).flatten()
+    write(f'ica_{name}.wav', sr_señal_isa, (s_separada * 32767).astype(np.int16))
+```
 
+La representacion gráfica para cada microfono se ve en la siguiente imagen.
+![image](https://github.com/user-attachments/assets/a7c419c7-9a70-4ebd-af43-f737137d7226)
 
+### 2.4 Calculo SNR 
+Después de aplicar las tecnicas de separacion queriamos evealuar los resultados comparando la señal aislada con la señal original utilizado la relación señal/ruido para cuantificar el desempeño de la separación
+```python
+   # Calcular SNR
+    snr_beamforming = calculate_snr(s_alineada, señal)
+    snr_ica = calculate_snr(s_separada, señal)
+    print(f"SNR para {name} - Beamforming: {snr_beamforming:.2f} dB")
+    print(f"SNR para {name} - ICA: {snr_ica:.2f} dB")
+```
+|   Microfono |SNR BEAMFORMING   | SNR ICA | SNR ORIGINAL |
+|--------------|-----------|-----------|----------- |
+| ISA (3)| -2.55dB  | 29.40dB |  15.15dB  |
+| ANA (1)| -4.13dB  | 25.02dB | 22.30dB |
+| LUNA (2)| -4.36dB  | 28.50dB |14.67dB|
+
+#### Análisis
+La técnica de **Beamforming** fue la menos efectiva para la separación del audio de los microfonos ya que en todos los casos disminuyó con respecto a la original, por tanto podria ser que hubo un mal ajuste en los microfonos y que la señal quedo por debajo del nivel de ruido. Es probable que el algoritmo de beamforming no esté bien configurado (mala selección de retardos o pesos) o que las señales provengan de múltiples fuentes en direcciones difíciles de filtrar.
+
+En cuanto la tecnica de **ICA** se evidencia que pudo separar mejor las fuentes de audio, eliminando ruido y preservando la señal útil. La única excepción que se tuvo fue en el microfono de ANA (1), donde la SNR final es menor que la original, lo que podría deberse a que el método no pudo separar correctamente la señal deseada o que introdujo artefactos. El éxito en dos de tres micrófonos indica que es un buen método para la separación de fuentes.
